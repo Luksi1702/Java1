@@ -494,22 +494,36 @@ public class MainWindow extends javax.swing.JFrame {
 
         try {
 
-            if (!tfPicturePath.getText().trim().equals(selectedArticle.getPicturePath())) {
-                if (Files.exists(Paths.get(selectedArticle.getPicturePath()))) {
-                    Files.deleteIfExists(Paths.get(selectedArticle.getPicturePath()));
-                }
-                String localPath = uploadPicture();
-                selectedArticle.setPicturePath(localPath);
-            }
+        String newPath = tfPicturePath.getText().trim();
+        String oldPath = selectedArticle.getPicturePath();
+
+        if (oldPath == null || !newPath.equals(oldPath)) {
+        if (oldPath != null && !oldPath.isEmpty() && Files.exists(Paths.get(oldPath))) {
+        Files.deleteIfExists(Paths.get(oldPath));
+        }
+
+        if (!newPath.isEmpty()) {
+        String localPath = uploadPicture();
+        selectedArticle.setPicturePath(localPath);
+        } else {
+        selectedArticle.setPicturePath("assets/no_image.png");
+        }
+    }
+
 
             selectedArticle.setTitle(tfTitle.getText().trim());
             selectedArticle.setLink(tfLink.getText().trim());
-            selectedArticle.setDescription(taDesc.getText().trim());
+            String desc = taDesc.getText().trim();
+            selectedArticle.setDescription(desc.isEmpty() ? "No description available." : desc);
             selectedArticle.setPublishedDate(LocalDateTime.parse(
                     tfPDate.getText().trim(),
                     Article.DATE_FORMATTER
             ));
-            selectedArticle.setContent(taContent.getText().trim());
+
+
+            String content = taContent.getText().trim();
+            selectedArticle.setContent(content.isEmpty() ? "Content not available." : content);
+
 
             /*Creator check*/
             String fullName = tfCreator.getText().trim();

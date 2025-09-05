@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author filip
+ * @author lukam
  */
 @XmlRootElement(name = "articlearchive")
 public final class ArticleArchive {
